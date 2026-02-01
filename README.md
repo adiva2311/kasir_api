@@ -1,6 +1,6 @@
 # KASIR API
 
-### BASE URL = https://kasir_api.gajahbumi.web.id/api/health-check
+### BASE URL = https://kasir_api.gajahbumi.web.id/api/
 
 #### API - ROUTES
 
