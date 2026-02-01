@@ -5,6 +5,7 @@ import (
 	"kasir_api/repositories"
 	"kasir_api/services"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v5"
 	"gorm.io/gorm"
@@ -12,10 +13,40 @@ import (
 
 type ProductController interface {
 	GetAllProducts(c *echo.Context) error
+	GetProductByID(c *echo.Context) error
 }
 
 type ProductControllerImpl struct {
 	ProductService services.ProductService
+}
+
+// GetProductByID implements ProductController.
+func (p *ProductControllerImpl) GetProductByID(c *echo.Context) error {
+	// Get ID from URL param
+	idString := c.Param("id")
+	id, err := strconv.Atoi(idString)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ApiResponse{
+			Status:  http.StatusText(http.StatusBadRequest),
+			Message: "Invalid product ID",
+		})
+	}
+
+	product, err := p.ProductService.GetProductByID(id)
+	if err != nil {
+		return c.JSON(http.StatusNotFound, dto.ApiResponse{
+			Status:  http.StatusText(http.StatusNotFound),
+			Message: "Product not found",
+		})
+	}
+
+	apiResponse := dto.ApiResponse{
+		Status:  http.StatusText(http.StatusOK),
+		Message: "Successfully retrieved product",
+		Data:    product,
+	}
+
+	return c.JSON(http.StatusOK, apiResponse)
 }
 
 // GetAllProducts implements ProductController.

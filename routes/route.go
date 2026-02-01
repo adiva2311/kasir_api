@@ -32,4 +32,5 @@ func APIRoutes(e *echo.Echo) {
 	// PRODUCT ROUTES
 	ProductController := controllers.NewProductController(db)
 	e.GET("/products", ProductController.GetAllProducts)
+	e.GET("/products/:id", ProductController.GetProductByID)
 }

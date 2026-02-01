@@ -2,16 +2,38 @@ package services
 
 import (
 	"errors"
+	"kasir_api/dto"
 	"kasir_api/models"
 	"kasir_api/repositories"
 )
 
 type ProductService interface {
+	// CreateProduct(product *models.Product) (dto.ProductResponse, error)
+	// UpdateProduct(id int, product *models.Product) (dto.ProductResponse, error)
 	GetAllProducts() ([]models.Product, error)
+	// DeleteProduct(id int) error
+	GetProductByID(id int) (*dto.ProductResponse, error)
 }
 
 type ProductServiceImpl struct {
 	ProductRepo repositories.ProductRepo
+}
+
+// GetProductByID implements ProductService.
+func (p *ProductServiceImpl) GetProductByID(id int) (*dto.ProductResponse, error) {
+	product, err := p.ProductRepo.GetProductByID(id)
+	if err != nil {
+		return nil, errors.New("failed to get product: " + err.Error())
+	}
+
+	result := dto.ProductResponse{
+		Name:     product.Name,
+		Price:    product.Price,
+		Stock:    product.Stock,
+		Category: product.Category.Name,
+	}
+
+	return &result, nil
 }
 
 // GetAllProducts implements ProductService.
