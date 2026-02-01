@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"errors"
 	"kasir_api/models"
 
 	"gorm.io/gorm"
@@ -13,10 +14,23 @@ type CategoryRepository interface {
 	GetCategoryByID(id int) (*models.Category, error)
 	GetAllCategories() ([]models.Category, error)
 	FindByName(name string) (*models.Category, error)
+	GetProductByCategoryID(categoryID int) ([]models.Product, error)
 }
 
 type CategoryRepositoryImpl struct {
 	DB *gorm.DB
+}
+
+// GetProductByCategoryID implements CategoryRepository.
+func (c *CategoryRepositoryImpl) GetProductByCategoryID(categoryID int) ([]models.Product, error) {
+	var products []models.Product
+
+	result := c.DB.Where("category_id = ?", categoryID).Find(&products)
+	if result.Error != nil {
+		return nil, errors.New("product not found")
+	}
+
+	return products, nil
 }
 
 // FindByName implements CategoryRepository.

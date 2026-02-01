@@ -46,4 +46,5 @@ func APIRoutes(e *echo.Echo) {
 	g.PUT("/categories/:id", CategoryController.UpdateCategory)
 	g.GET("/categories/:id", CategoryController.GetCategoryByID)
 	g.DELETE("/categories/:id", CategoryController.DeleteCategory)
+	g.GET("/products/category/:id", CategoryController.GetProductByCategoryID)
 }

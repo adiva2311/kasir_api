@@ -13,7 +13,6 @@ type ProductRepo interface {
 	UpdateProduct(id int, product *models.Product) error
 	DeleteProduct(id int) error
 	GetProductByID(id int) (*models.Product, error)
-	GetProductByCategoryID(categoryID int) ([]models.Product, error)
 	GetProductByName(name string) (*models.Product, error)
 }
 
@@ -39,18 +38,6 @@ func (p *ProductRepoImpl) DeleteProduct(id int) error {
 	}
 
 	return result.Error
-}
-
-// GetProductByCategoryID implements ProductRepo.
-func (p *ProductRepoImpl) GetProductByCategoryID(categoryID int) ([]models.Product, error) {
-	var products []models.Product
-
-	result := p.DB.Where("category_id = ?", categoryID).Find(&products)
-	if result.Error != nil {
-		return nil, errors.New("product not found")
-	}
-
-	return products, nil
 }
 
 // GetProductByID implements ProductRepo.

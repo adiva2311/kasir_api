@@ -13,10 +13,25 @@ type CategoryService interface {
 	DeleteCategory(id int) error
 	GetCategoryByID(id int) (dto.CategoryResponse, error)
 	GetAllCategories() ([]dto.CategoryResponse, error)
+	GetProductByCategoryID(categoryID int) ([]dto.ProductResponse, error)
 }
 
 type CategoryServiceImpl struct {
 	CategoryRepo repositories.CategoryRepository
+}
+
+// GetProductByCategoryID implements CategoryService.
+func (c *CategoryServiceImpl) GetProductByCategoryID(categoryID int) ([]dto.ProductResponse, error) {
+	products, err := c.CategoryRepo.GetProductByCategoryID(categoryID)
+	if err != nil {
+		return nil, errors.New("failed to get products by category ID: " + err.Error())
+	}
+
+	var ProductCategoryResponse []dto.ProductResponse
+	for _, product := range products {
+		ProductCategoryResponse = append(ProductCategoryResponse, *dto.ToProductResponse(&product))
+	}
+	return ProductCategoryResponse, nil
 }
 
 // CreateCategory implements CategoryService.

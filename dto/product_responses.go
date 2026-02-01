@@ -3,18 +3,20 @@ package dto
 import "kasir_api/models"
 
 type ProductResponse struct {
-	ID    int    `json:"id"`
-	Name  string `json:"name"`
-	Price int    `json:"price"`
-	Stock int    `json:"stock"`
+	ID         int    `json:"id"`
+	Name       string `json:"name"`
+	Price      int    `json:"price"`
+	Stock      int    `json:"stock"`
+	CategoryID int    `json:"category_id,omitempty"`
 }
 
 func ToProductResponse(product *models.Product) *ProductResponse {
 	return &ProductResponse{
-		ID:    product.ID,
-		Name:  product.Name,
-		Price: product.Price,
-		Stock: product.Stock,
+		ID:         product.ID,
+		Name:       product.Name,
+		Price:      product.Price,
+		Stock:      product.Stock,
+		CategoryID: product.CategoryID,
 	}
 }
 

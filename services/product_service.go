@@ -102,10 +102,11 @@ func (p *ProductServiceImpl) GetAllProducts() ([]dto.ProductResponse, error) {
 	var Products []dto.ProductResponse
 	for _, product := range products {
 		Products = append(Products, dto.ProductResponse{
-			ID:    product.ID,
-			Name:  product.Name,
-			Price: product.Price,
-			Stock: product.Stock,
+			ID:         product.ID,
+			Name:       product.Name,
+			Price:      product.Price,
+			Stock:      product.Stock,
+			CategoryID: product.CategoryID,
 		})
 	}
 

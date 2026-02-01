@@ -18,10 +18,39 @@ type CategoryController interface {
 	UpdateCategory(c *echo.Context) error
 	DeleteCategory(c *echo.Context) error
 	GetAllCategories(c *echo.Context) error
+	GetProductByCategoryID(c *echo.Context) error
 }
 
 type CategoryControllerImpl struct {
 	CategoryService services.CategoryService
+}
+
+// GetProductByCategoryID implements CategoryController.
+func (r *CategoryControllerImpl) GetProductByCategoryID(c *echo.Context) error {
+	idParam := c.Param("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ApiResponse{
+			Status:  http.StatusText(http.StatusBadRequest),
+			Message: "Invalid category ID: " + err.Error(),
+		})
+	}
+
+	products, err := r.CategoryService.GetProductByCategoryID(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dto.ApiResponse{
+			Status:  http.StatusText(http.StatusInternalServerError),
+			Message: "Failed to get products by category ID: " + err.Error(),
+		})
+	}
+
+	ApiResponse := dto.ApiResponse{
+		Status:  http.StatusText(http.StatusOK),
+		Message: "Products retrieved successfully",
+		Data:    products,
+	}
+
+	return c.JSON(http.StatusOK, ApiResponse)
 }
 
 // CreateCategory implements CategoryController.
