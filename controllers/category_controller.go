@@ -31,7 +31,7 @@ func (r *CategoryControllerImpl) GetProductByCategoryID(c *echo.Context) error {
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusBadRequest),
+			Status:  http.StatusBadRequest,
 			Message: "Invalid category ID: " + err.Error(),
 		})
 	}
@@ -39,14 +39,14 @@ func (r *CategoryControllerImpl) GetProductByCategoryID(c *echo.Context) error {
 	products, err := r.CategoryService.GetProductByCategoryID(id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusInternalServerError),
+			Status:  http.StatusInternalServerError,
 			Message: "Failed to get products by category ID: " + err.Error(),
 		})
 	}
 
 	ApiResponse := dto.ApiResponse{
-		Status:  http.StatusText(http.StatusOK),
-		Message: "Products retrieved successfully",
+		Status:  http.StatusOK,
+		Message: "Products retrieved successfully -> Status : " + http.StatusText(http.StatusOK),
 		Data:    products,
 	}
 
@@ -59,7 +59,7 @@ func (r *CategoryControllerImpl) CreateCategory(c *echo.Context) error {
 	err := c.Bind(userPayload)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusBadRequest),
+			Status:  http.StatusBadRequest,
 			Message: "Invalid request payload : " + err.Error(),
 		})
 	}
@@ -71,14 +71,14 @@ func (r *CategoryControllerImpl) CreateCategory(c *echo.Context) error {
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusInternalServerError),
+			Status:  http.StatusInternalServerError,
 			Message: "Failed to create category: " + err.Error(),
 		})
 	}
 
 	ApiResponse := dto.ApiResponse{
-		Status:  http.StatusText(http.StatusCreated),
-		Message: "Category created successfully",
+		Status:  http.StatusOK,
+		Message: "Category created successfully -> Status : " + http.StatusText(http.StatusCreated),
 		Data:    result,
 	}
 
@@ -92,7 +92,7 @@ func (r *CategoryControllerImpl) DeleteCategory(c *echo.Context) error {
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusBadRequest),
+			Status:  http.StatusBadRequest,
 			Message: "Invalid category ID: " + err.Error(),
 		})
 	}
@@ -100,14 +100,14 @@ func (r *CategoryControllerImpl) DeleteCategory(c *echo.Context) error {
 	err = r.CategoryService.DeleteCategory(id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusInternalServerError),
+			Status:  http.StatusInternalServerError,
 			Message: "Failed to delete category: " + err.Error(),
 		})
 	}
 
 	ApiResponse := dto.ApiResponse{
-		Status:  http.StatusText(http.StatusOK),
-		Message: "Category deleted successfully",
+		Status:  http.StatusOK,
+		Message: "Category deleted successfully -> Status : " + http.StatusText(http.StatusOK),
 	}
 
 	return c.JSON(http.StatusOK, ApiResponse)
@@ -118,14 +118,14 @@ func (r *CategoryControllerImpl) GetAllCategories(c *echo.Context) error {
 	categories, err := r.CategoryService.GetAllCategories()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusInternalServerError),
+			Status:  http.StatusInternalServerError,
 			Message: "Failed to get categories: " + err.Error(),
 		})
 	}
 
 	apiResponse := dto.ApiResponse{
-		Status:  http.StatusText(http.StatusOK),
-		Message: "Categories retrieved successfully",
+		Status:  http.StatusOK,
+		Message: "Categories retrieved successfully -> Status : " + http.StatusText(http.StatusOK),
 		Data:    categories,
 	}
 
@@ -138,7 +138,7 @@ func (r *CategoryControllerImpl) GetCategoryByID(c *echo.Context) error {
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusBadRequest),
+			Status:  http.StatusBadRequest,
 			Message: "Invalid category ID: " + err.Error(),
 		})
 	}
@@ -146,14 +146,14 @@ func (r *CategoryControllerImpl) GetCategoryByID(c *echo.Context) error {
 	category, err := r.CategoryService.GetCategoryByID(id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusInternalServerError),
+			Status:  http.StatusInternalServerError,
 			Message: "Failed to get category: " + err.Error(),
 		})
 	}
 
 	ApiResponse := dto.ApiResponse{
-		Status:  http.StatusText(http.StatusOK),
-		Message: "Category retrieved successfully",
+		Status:  http.StatusOK,
+		Message: "Category retrieved successfully -> Status : " + http.StatusText(http.StatusOK),
 		Data:    category,
 	}
 
@@ -166,7 +166,7 @@ func (r *CategoryControllerImpl) UpdateCategory(c *echo.Context) error {
 	err := c.Bind(userPayload)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusBadRequest),
+			Status:  http.StatusBadRequest,
 			Message: "Invalid request payload : " + err.Error(),
 		})
 	}
@@ -175,7 +175,7 @@ func (r *CategoryControllerImpl) UpdateCategory(c *echo.Context) error {
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusBadRequest),
+			Status:  http.StatusBadRequest,
 			Message: "Invalid category ID: " + err.Error(),
 		})
 	}
@@ -187,14 +187,14 @@ func (r *CategoryControllerImpl) UpdateCategory(c *echo.Context) error {
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusInternalServerError),
+			Status:  http.StatusInternalServerError,
 			Message: "Failed to update category: " + err.Error(),
 		})
 	}
 
 	ApiResponse := dto.ApiResponse{
-		Status:  http.StatusText(http.StatusOK),
-		Message: "Category updated successfully",
+		Status:  http.StatusOK,
+		Message: "Category updated successfully -> Status : " + http.StatusText(http.StatusOK),
 		Data:    result,
 	}
 

@@ -25,23 +25,13 @@ type ProductControllerImpl struct {
 	ProductService services.ProductService
 }
 
-// func CapitalizeFirst(s string) string {
-// 	if s == "" {
-// 		return ""
-// 	}
-// 	// Decode the first rune (character)
-// 	r, size := utf8.DecodeRuneInString(s)
-// 	// Convert it to upper case and concatenate the rest of the string
-// 	return string(unicode.ToUpper(r)) + s[size:]
-// }
-
 // CreateProduct implements ProductController.
 func (p *ProductControllerImpl) CreateProduct(c *echo.Context) error {
 	userPayload := new(models.Product)
 	err := c.Bind(userPayload)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusBadRequest),
+			Status:  http.StatusBadRequest,
 			Message: "Failed to bind request body : " + err.Error(),
 		})
 	}
@@ -54,13 +44,13 @@ func (p *ProductControllerImpl) CreateProduct(c *echo.Context) error {
 	})
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusInternalServerError),
+			Status:  http.StatusInternalServerError,
 			Message: "Failed to create product: " + err.Error(),
 		})
 	}
 
 	apiResponse := dto.ApiResponse{
-		Status:  http.StatusText(http.StatusOK),
+		Status:  http.StatusOK,
 		Message: "Successfully created product",
 		Data:    product,
 	}
@@ -75,7 +65,7 @@ func (p *ProductControllerImpl) DeleteProduct(c *echo.Context) error {
 	id, err := strconv.Atoi(idString)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusBadRequest),
+			Status:  http.StatusBadRequest,
 			Message: "Invalid product ID",
 		})
 	}
@@ -83,13 +73,13 @@ func (p *ProductControllerImpl) DeleteProduct(c *echo.Context) error {
 	err = p.ProductService.DeleteProduct(id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusInternalServerError),
+			Status:  http.StatusInternalServerError,
 			Message: "Failed to delete product: " + err.Error(),
 		})
 	}
 
 	apiResponse := dto.ApiResponse{
-		Status:  http.StatusText(http.StatusOK),
+		Status:  http.StatusOK,
 		Message: "Successfully deleted product",
 	}
 
@@ -103,7 +93,7 @@ func (p *ProductControllerImpl) UpdateProduct(c *echo.Context) error {
 	id, err := strconv.Atoi(idString)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusBadRequest),
+			Status:  http.StatusBadRequest,
 			Message: "Invalid product ID",
 		})
 	}
@@ -111,7 +101,7 @@ func (p *ProductControllerImpl) UpdateProduct(c *echo.Context) error {
 	userPayload := new(dto.CreateUpdateProductResponse)
 	if err := c.Bind(userPayload); err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusBadRequest),
+			Status:  http.StatusBadRequest,
 			Message: "Failed to bind request body",
 		})
 	}
@@ -124,13 +114,13 @@ func (p *ProductControllerImpl) UpdateProduct(c *echo.Context) error {
 	})
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusInternalServerError),
+			Status:  http.StatusInternalServerError,
 			Message: "Failed to update product: " + err.Error(),
 		})
 	}
 
 	apiResponse := dto.ApiResponse{
-		Status:  http.StatusText(http.StatusOK),
+		Status:  http.StatusOK,
 		Message: "Successfully updated product",
 		Data:    product,
 	}
@@ -145,22 +135,22 @@ func (p *ProductControllerImpl) GetProductByID(c *echo.Context) error {
 	id, err := strconv.Atoi(idString)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusBadRequest),
-			Message: "Invalid product ID",
+			Status:  http.StatusBadRequest,
+			Message: "Invalid product ID -> Status : " + http.StatusText(http.StatusBadRequest),
 		})
 	}
 
 	product, err := p.ProductService.GetProductByID(id)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusNotFound),
-			Message: "Product not found",
+			Status:  http.StatusNotFound,
+			Message: "Product not found -> Status : " + http.StatusText(http.StatusNotFound),
 		})
 	}
 
 	apiResponse := dto.ApiResponse{
-		Status:  http.StatusText(http.StatusOK),
-		Message: "Successfully retrieved product",
+		Status:  http.StatusOK,
+		Message: "Successfully retrieved product -> Status : " + http.StatusText(http.StatusOK),
 		Data:    product,
 	}
 
@@ -172,14 +162,14 @@ func (p *ProductControllerImpl) GetAllProducts(c *echo.Context) error {
 	products, err := p.ProductService.GetAllProducts()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dto.ApiResponse{
-			Status:  http.StatusText(http.StatusInternalServerError),
+			Status:  http.StatusInternalServerError,
 			Message: "Failed to get products: " + err.Error(),
 		})
 	}
 
 	apiResponse := dto.ApiResponse{
-		Status:  http.StatusText(http.StatusOK),
-		Message: "Successfully retrieved products",
+		Status:  http.StatusOK,
+		Message: "Successfully retrieved products -> Status : " + http.StatusText(http.StatusOK),
 		Data:    products,
 	}
 
