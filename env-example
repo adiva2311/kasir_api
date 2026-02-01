@@ -1,0 +1,10 @@
+# Application Configuration
+API_HOST=
+API_PORT=
+
+# Database Configuration
+USERNAME_DB=
+PASSWORD_DB=
+HOST_DB=
+PORT_DB=
+DATABASE_NAME=

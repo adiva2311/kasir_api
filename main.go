@@ -27,5 +27,6 @@ func main() {
 	api_port := appConfig.APIPort
 
 	// START SERVER
-	e.Logger.Fatal(e.Start(api_host + ":" + api_port))
+	// e.Logger.Fatal(e.Start(api_host + ":" + api_port))
+	e.Start(api_host + ":" + api_port)
 }

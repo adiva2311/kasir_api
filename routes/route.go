@@ -16,14 +16,16 @@ func APIRoutes(e *echo.Echo) {
 		log.Fatal("Failed Connect to Database", err)
 	}
 
-	e.GET("/", func(c *echo.Context) error {
+	g := e.Group("/api")
+
+	g.GET("/", func(c *echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]string{
 			"status": "This is Kasir API",
 		})
 	})
 
 	// HEALTH CHECK
-	e.GET("/health-check", func(c *echo.Context) error {
+	g.GET("/health-check", func(c *echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]string{
 			"status": "API is running",
 		})
@@ -31,6 +33,17 @@ func APIRoutes(e *echo.Echo) {
 
 	// PRODUCT ROUTES
 	ProductController := controllers.NewProductController(db)
-	e.GET("/products", ProductController.GetAllProducts)
-	e.GET("/products/:id", ProductController.GetProductByID)
+	g.GET("/products", ProductController.GetAllProducts)
+	g.POST("/products", ProductController.CreateProduct)
+	g.GET("/products/:id", ProductController.GetProductByID)
+	g.PUT("/products/:id", ProductController.UpdateProduct)
+	g.DELETE("/products/:id", ProductController.DeleteProduct)
+
+	// CATEGORY ROUTES
+	CategoryController := controllers.NewCategoryController(db)
+	g.GET("/categories", CategoryController.GetAllCategories)
+	g.POST("/categories", CategoryController.CreateCategory)
+	g.PUT("/categories/:id", CategoryController.UpdateCategory)
+	g.GET("/categories/:id", CategoryController.GetCategoryByID)
+	g.DELETE("/categories/:id", CategoryController.DeleteCategory)
 }
