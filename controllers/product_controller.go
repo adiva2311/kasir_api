@@ -19,10 +19,31 @@ type ProductController interface {
 	CreateProduct(c *echo.Context) error
 	UpdateProduct(c *echo.Context) error
 	DeleteProduct(c *echo.Context) error
+	SearchProductsByName(c *echo.Context) error
 }
 
 type ProductControllerImpl struct {
 	ProductService services.ProductService
+}
+
+// SearchProductsByName implements ProductController.
+func (p *ProductControllerImpl) SearchProductsByName(c *echo.Context) error {
+	name := c.QueryParam("name")
+	products, err := p.ProductService.SearchProductsByName(name)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dto.ApiResponse{
+			Status:  http.StatusInternalServerError,
+			Message: "Failed to search products: " + err.Error(),
+		})
+	}
+
+	apiResponse := dto.ApiResponse{
+		Status:  http.StatusOK,
+		Message: "Successfully searched products",
+		Data:    products,
+	}
+
+	return c.JSON(http.StatusOK, apiResponse)
 }
 
 // CreateProduct implements ProductController.

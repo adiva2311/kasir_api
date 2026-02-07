@@ -14,10 +14,23 @@ type ProductRepo interface {
 	DeleteProduct(id int) error
 	GetProductByID(id int) (*models.Product, error)
 	GetProductByName(name string) (*models.Product, error)
+	SearchProductsByName(name string) ([]models.Product, error)
 }
 
 type ProductRepoImpl struct {
 	DB *gorm.DB
+}
+
+// SearchProductsByName implements ProductRepo.
+func (p *ProductRepoImpl) SearchProductsByName(name string) ([]models.Product, error) {
+	var products []models.Product
+
+	result := p.DB.Where("name ILIKE ?", "%"+name+"%").Find(&products)
+	if result.Error != nil {
+		return nil, errors.New("product not found")
+	}
+
+	return products, nil
 }
 
 // CreateProduct implements ProductRepo.

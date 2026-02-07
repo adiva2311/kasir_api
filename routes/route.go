@@ -38,6 +38,7 @@ func APIRoutes(e *echo.Echo) {
 	g.GET("/products/:id", ProductController.GetProductByID)
 	g.PUT("/products/:id", ProductController.UpdateProduct)
 	g.DELETE("/products/:id", ProductController.DeleteProduct)
+	g.GET("/products/search", ProductController.SearchProductsByName)
 
 	// CATEGORY ROUTES
 	CategoryController := controllers.NewCategoryController(db)

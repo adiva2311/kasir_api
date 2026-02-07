@@ -13,10 +13,32 @@ type ProductService interface {
 	GetAllProducts() ([]dto.ProductResponse, error)
 	DeleteProduct(id int) error
 	GetProductByID(id int) (*dto.GetProductDetailResponse, error)
+	SearchProductsByName(name string) ([]dto.GetProductDetailResponse, error)
 }
 
 type ProductServiceImpl struct {
 	ProductRepo repositories.ProductRepo
+}
+
+// SearchProductsByName implements ProductService.
+func (p *ProductServiceImpl) SearchProductsByName(name string) ([]dto.GetProductDetailResponse, error) {
+	products, err := p.ProductRepo.SearchProductsByName(name)
+	if err != nil {
+		return nil, errors.New("failed to search products: " + err.Error())
+	}
+
+	var result []dto.GetProductDetailResponse
+	for _, product := range products {
+		result = append(result, dto.GetProductDetailResponse{
+			ID:       product.ID,
+			Name:     product.Name,
+			Price:    product.Price,
+			Stock:    product.Stock,
+			Category: product.Category.Name,
+		})
+	}
+
+	return result, nil
 }
 
 // CreateProduct implements ProductService.
