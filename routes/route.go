@@ -48,4 +48,8 @@ func APIRoutes(e *echo.Echo) {
 	g.GET("/categories/:id", CategoryController.GetCategoryByID)
 	g.DELETE("/categories/:id", CategoryController.DeleteCategory)
 	g.GET("/products/category/:id", CategoryController.GetProductByCategoryID)
+
+	// TRANSACTION ROUTES
+	TransactionController := controllers.NewTransactionController(db)
+	g.POST("/transaction", TransactionController.CreateTransaction)
 }

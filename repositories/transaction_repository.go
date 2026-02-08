@@ -7,7 +7,7 @@ import (
 )
 
 type TransactionRepo interface {
-	CreateTransaction(transaction []models.Transaction) error
+	CreateTransaction(transaction *models.Transaction) error
 }
 
 type TransactionRepoImpl struct {
@@ -15,13 +15,8 @@ type TransactionRepoImpl struct {
 }
 
 // CreateTransaction implements TransactionRepo.
-func (t *TransactionRepoImpl) CreateTransaction(transaction []models.Transaction) error {
-	result := t.DB.Create(&transaction).Error
-	if result != nil {
-		return result
-	}
-
-	return nil
+func (t *TransactionRepoImpl) CreateTransaction(transaction *models.Transaction) error {
+	return t.DB.Create(transaction).Error
 }
 
 func NewTransactionRepo(db *gorm.DB) TransactionRepo {
